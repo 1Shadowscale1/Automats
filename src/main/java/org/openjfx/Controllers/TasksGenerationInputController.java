@@ -1,5 +1,6 @@
 package org.openjfx.Controllers;
 
+import algorithms.GeneratePDFTaskAndAnswer;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -10,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
 
 public class TasksGenerationInputController {
 
@@ -61,6 +64,16 @@ public class TasksGenerationInputController {
                 return;
 
             button.getScene().getWindow().hide();
+
+            GeneratePDFTaskAndAnswer generatePDFTaskAndAnswer = new GeneratePDFTaskAndAnswer
+                (Integer.parseInt(wordsCountField.getText()), Integer.parseInt(optionsCountField.getText()));
+            generatePDFTaskAndAnswer.generateStringAndPattern();
+            try {
+                generatePDFTaskAndAnswer.generatePdfTask();
+                generatePDFTaskAndAnswer.generatePdfAnswer();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             Alert informationDialog = new Alert(AlertType.INFORMATION);
             informationDialog.setTitle("Генерация вариантов");
