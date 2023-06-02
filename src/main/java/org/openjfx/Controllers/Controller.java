@@ -26,12 +26,16 @@ public class Controller {
     private Button tableAutomatonInputWithSyncCheckButton;
 
     @FXML
+    private Button searchSubstringsInTextButton;
+
+    @FXML
     void initialize() {
         initAuthorsButton();
         setupTaskButton(tableAutomatonInputButton, "/automatonInput.fxml");
         setupTaskButton(tableAndRegexAutomatonInputButton, "/automatonAndRegexInput.fxml");
         setupTaskButton(tableAutomatonInputWithSyncCheckButton, "/automatonSyncInput.fxml");
         setupTaskButton(generateSyncAutomatonButton, "/automatonSyncGenerationInput.fxml");
+        setupTaskButton(searchSubstringsInTextButton, "/substringsInTextMenu.fxml");
     }
 
     @FXML
