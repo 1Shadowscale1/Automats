@@ -30,5 +30,10 @@
             <Font size="15.0" />
          </font>
       </Button>
+      <Button fx:id="searchSubstringsInTextButton" layoutX="30.0" layoutY="360.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="660.0" text="Поиск подстрок в тексте">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
