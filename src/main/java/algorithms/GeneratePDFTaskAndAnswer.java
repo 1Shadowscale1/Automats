@@ -138,8 +138,6 @@ public class GeneratePDFTaskAndAnswer {
             out2.remove(0);
 
             List<List<String>> out22 = createTable(out2);
-            System.out.println(out1); //
-            System.out.println(out22); //
 
             PdfPTable table = new PdfPTable(3);
             table.setWidthPercentage(70);
