@@ -17,8 +17,11 @@ public class KnuthMorrisPratt {
         String[] prefix = new String[patternLen];
         int j = 0;
         LPS(patternBuilder, patternLen, lps, prefix);
-        result.add("Префикс-функция (длины) " + Arrays.toString(lps));
-        result.add("Префикс-функция (префиксы) " + Arrays.toString(prefix));
+        //result.add("Префикс-функция (длины) " + Arrays.toString(lps));
+        result.add("Prefix-function (length) " + Arrays.toString(lps));
+
+        //result.add("Префикс-функция (префиксы) " + Arrays.toString(prefix));
+        result.add("Prefix-function (prefix) " + Arrays.toString(prefix));
 
         int i = 0;
         while (i < textLen) {
@@ -29,7 +32,8 @@ public class KnuthMorrisPratt {
                         "|" + textBuilder.substring(i-j, i) + "|" + textBuilder.substring(i, textLen) + " ");
             }
             if (j == patternLen) {
-                result.add("Подстрока найдена по индексу " + (i - j));
+                //result.add("Подстрока найдена по индексу " + (i - j));
+                result.add("Substring found by index " + (i - j));
                 j = lps[j - 1];
             }
             else if (i < textLen && patternBuilder.charAt(j) != textBuilder.charAt(i)) {

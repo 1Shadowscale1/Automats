@@ -15,8 +15,8 @@ public class KnuthMorrisPratt {
     }
     @Test
     public void checkKMPTest2() {
-        String text = "aaaaa";
-        String pattern = "aa";
+        String text = "mbacj";
+        String pattern = "acj";
         List<String> output = algorithms.KnuthMorrisPratt.KMP(pattern, text);
         System.out.println(output);
     }
