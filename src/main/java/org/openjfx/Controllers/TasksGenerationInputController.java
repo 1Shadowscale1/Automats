@@ -78,7 +78,7 @@ public class TasksGenerationInputController {
             Alert informationDialog = new Alert(AlertType.INFORMATION);
             informationDialog.setTitle("Генерация вариантов");
             informationDialog.setHeaderText(null);
-            informationDialog.setContentText("Варианты успешно сгенерированы! Их можно найти в папке src/main/resources");
+            informationDialog.setContentText("Варианты успешно сгенерированы! Их можно найти в текущей директории с названиями task.pdf и answer.pdf");
             informationDialog.showAndWait();
 
             Loader.loadFxml("/substringsInTextMenu.fxml", false);

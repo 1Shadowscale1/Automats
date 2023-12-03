@@ -10,14 +10,14 @@ public class BruteforceTests {
     public void BruteforceTest1(){
         String text = "yxyxyxxyxyxyxyyxyxyxxyxyxyxyyxyxyxxyxyxyxyyxyxyxxyxyxyxxy";
         String pattern = "yxyxyxxyxyxyxx";
-        List<String> output = algorithms.BruteforceStrMatcher.Bruteforce(pattern, text);
+        List<String> output = BruteforceStrMatcher.Bruteforce(pattern, text);
         System.out.println(output);
     }
     @Test
     public void BruteforceTest2(){
         String text = "aaaaa";
         String pattern = "aa";
-        List<String> output = algorithms.BruteforceStrMatcher.Bruteforce(pattern, text);
+        List<String> output = BruteforceStrMatcher.Bruteforce(pattern, text);
         System.out.println(output);
     }
 }

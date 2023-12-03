@@ -2,5 +2,5 @@
 .idea
 **/.DS_Store
 
-/src/main/resources/task.pdf
-/src/main/resources/answer.pdf
+task.pdf
+answer.pdf

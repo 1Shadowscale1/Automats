@@ -1,3 +1,5 @@
+package FullTask2Tests;
+
 import algorithms.GlushkovAlgo;
 import algorithms.Isomorphism;
 import algorithms.RegExprBuild;

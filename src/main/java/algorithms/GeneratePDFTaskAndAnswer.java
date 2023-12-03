@@ -1,4 +1,6 @@
 package algorithms;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -8,8 +10,6 @@ import java.util.List;
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.Document;
-import com.lowagie.text.Paragraph;
 
 
 public class GeneratePDFTaskAndAnswer {
@@ -26,6 +26,7 @@ public class GeneratePDFTaskAndAnswer {
     }
 
     public void generateStringAndPattern() {
+        stringAndSubstring.clear();
         for (int i = 0; i < optionCount; i++) {
             Random random = new Random();
             double randomNumber2 = random.nextDouble();
@@ -109,7 +110,8 @@ public class GeneratePDFTaskAndAnswer {
     public void generatePdfAnswer() throws IOException {
         int i = 0;
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/answer.pdf"));
+        String absolutePath = new File("answer.pdf").getAbsolutePath();
+        PdfWriter.getInstance(document, new FileOutputStream(absolutePath));
         document.open();
         for (Map.Entry<String, String> entry : stringAndSubstring.entrySet()) {
 
@@ -180,7 +182,8 @@ public class GeneratePDFTaskAndAnswer {
     public void generatePdfTask() throws IOException {
         int i = 0;
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("src/main/resources/task.pdf"));
+        String absolutePath = new File("task.pdf").getAbsolutePath();
+        PdfWriter.getInstance(document, new FileOutputStream(absolutePath));
         document.open();
         for (Map.Entry<String, String> entry : stringAndSubstring.entrySet()) {
             //String f = "Option " + i + " \n" + "Is a "  + entry.getValue() + " substring of a string " + entry.getKey() + " ?";
