@@ -21,8 +21,8 @@ public class GeneratePDFTaskAndAnswer {
     private static int optionCount; //колличество вариантов
     static Map<String, String> stringAndSubstring = new HashMap<>();
     public GeneratePDFTaskAndAnswer(int wordCount, int optionCount) {
-        this.wordCount = wordCount;
-        this.optionCount = optionCount;
+        GeneratePDFTaskAndAnswer.wordCount = wordCount;
+        GeneratePDFTaskAndAnswer.optionCount = optionCount;
     }
 
     public void generateStringAndPattern() {

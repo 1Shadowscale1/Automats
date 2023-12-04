@@ -24,16 +24,17 @@ public class GreedyWordFindingTests {
 
         SynchronizedAutomaton syncAut = null;
         try {
-            syncAut = new SynchronizedAutomaton
-                (jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
+            syncAut = new SynchronizedAutomaton(jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             Assertions.fail();
         }
 
-        GreedySyncWordFinding.addTwoElementVertices(syncAut);
-        GreedySyncWordFinding.greedyWordFindingAlg(syncAut);
+        if (syncAut != null) {
+            GreedySyncWordFinding.addTwoElementVertices(syncAut);
+            GreedySyncWordFinding.greedyWordFindingAlg(syncAut);
 
-        Assertions.assertEquals("baa", syncAut.syncWord);
+            Assertions.assertEquals("baa", syncAut.syncWord);
+        }
     }
 }

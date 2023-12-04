@@ -29,20 +29,21 @@ public class DijkstraTests {
 
         SynchronizedAutomaton syncAut = null;
         try {
-            syncAut = new SynchronizedAutomaton
-                (jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
+            syncAut = new SynchronizedAutomaton(jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             Assertions.fail();
         }
 
-        GreedySyncWordFinding.addTwoElementVertices(syncAut);
-        for (String vertex : syncAut.twoElementVertices)
-            dijkstraResult.put(vertex,
-                Dijkstra.dijkstraAlg(syncAut, vertex).entrySet().iterator().next().getValue());
+        if (syncAut != null) {
+            GreedySyncWordFinding.addTwoElementVertices(syncAut);
+            for (String vertex : syncAut.twoElementVertices)
+                dijkstraResult.put(vertex,
+                        Dijkstra.dijkstraAlg(syncAut, vertex).entrySet().iterator().next().getValue());
 
-        Assertions.assertEquals(List.of("b"), dijkstraResult.get("01"));
-        Assertions.assertEquals(List.of("a", "a"), dijkstraResult.get("02"));
-        Assertions.assertEquals(List.of("a"), dijkstraResult.get("12"));
+            Assertions.assertEquals(List.of("b"), dijkstraResult.get("01"));
+            Assertions.assertEquals(List.of("a", "a"), dijkstraResult.get("02"));
+            Assertions.assertEquals(List.of("a"), dijkstraResult.get("12"));
+        }
     }
 }

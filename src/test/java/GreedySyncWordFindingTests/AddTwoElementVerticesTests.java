@@ -25,15 +25,16 @@ public class AddTwoElementVerticesTests {
 
         SynchronizedAutomaton syncAut = null;
         try {
-            syncAut = new SynchronizedAutomaton
-                (jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
+            syncAut = new SynchronizedAutomaton(jumpTable, new ArrayList<>(), new ArrayList<>(), null, null);
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
             Assertions.fail();
         }
 
-        GreedySyncWordFinding.addTwoElementVertices(syncAut);
+        if (syncAut != null) {
+            GreedySyncWordFinding.addTwoElementVertices(syncAut);
 
-        Assertions.assertEquals(List.of("01", "02", "12"), syncAut.twoElementVertices);
+            Assertions.assertEquals(List.of("01", "02", "12"), syncAut.twoElementVertices);
+        }
     }
 }

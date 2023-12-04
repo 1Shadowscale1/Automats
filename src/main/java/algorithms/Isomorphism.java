@@ -95,7 +95,10 @@ public class Isomorphism {
 
     public static WordWithCycle findWordIn1ThatNotIn2(
             Automaton aut1, Automaton aut2, String u, String v, String prevLetter, HashMap<String, Boolean> prevVisited){
-        var visited = (HashMap<String, Boolean>)prevVisited.clone();
+        HashMap<String, Boolean> visited = new HashMap<>();
+        if (prevVisited.clone() instanceof HashMap<?, ?>) {
+            visited = (HashMap<String, Boolean>)prevVisited;
+        }
 
         visited.put(u, true);
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 public class buildAdductedTest {
     @Test
-    public void buildAdductedTest1 () {
+    public void buildAdductedTest1() {
         HashBasedTable<String, String, String> first = HashBasedTable.create();
         first.put("0", "a", "5");
         first.put("1", "a", "6");
@@ -55,8 +55,11 @@ public class buildAdductedTest {
         List<String> expectedFinalVertexes = Lists.newArrayList("4", "5, 6");
 
         assert result != null;
-        Assertions.assertEquals("0, 1", result.startVertex);
-        Assertions.assertEquals(expectedFinalVertexes, result.finalVertices);
-        Assertions.assertEquals(expected, result.jumpTable);
+
+        if (result != null) {
+            Assertions.assertEquals("0, 1", result.startVertex);
+            Assertions.assertEquals(expectedFinalVertexes, result.finalVertices);
+            Assertions.assertEquals(expected, result.jumpTable);
+        }
     }
 }

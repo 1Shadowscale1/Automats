@@ -2,11 +2,10 @@ package automaton;
 
 import com.google.common.collect.HashBasedTable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SynchronizedAutomaton extends Automaton implements Cloneable, Serializable {
+public class SynchronizedAutomaton extends Automaton {
     public String syncWord;
     public String shortestSyncWord;
     public List<String> twoElementVertices;

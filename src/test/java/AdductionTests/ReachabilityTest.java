@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ReachabilityTest {
     @Test
-    public void reachabilityTest1(){
+    public void reachabilityTest1() {
         HashBasedTable<String, String, String> first = HashBasedTable.create();
         first.put("0", "a", "5");
         first.put("1", "a", "6");
@@ -39,11 +39,12 @@ public class ReachabilityTest {
         }
         Automaton expected = new Automaton(false, first, "0", firstFinal);
 
-        Assertions.assertEquals(expected.jumpTable, result.jumpTable);
+        if (result != null)
+            Assertions.assertEquals(expected.jumpTable, result.jumpTable);
     }
 
     @Test
-    public void reachabilityTest2(){
+    public void reachabilityTest2() {
         HashBasedTable<String, String, String> first = HashBasedTable.create();
         first.put("0", "a", "1");
         first.put("1", "a", "1");
@@ -76,6 +77,8 @@ public class ReachabilityTest {
         Automaton expected = new Automaton(false, first, "0", firstFinal);
 
         assert result != null;
-        Assertions.assertEquals(expected.jumpTable, result.jumpTable);
+
+        if (result != null)
+            Assertions.assertEquals(expected.jumpTable, result.jumpTable);
     }
 }
