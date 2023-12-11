@@ -1,41 +1,34 @@
 package org.openjfx.Controllers;
 
 import automaton.Automaton;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
 
 public class Controller {
-
     public static final ArrayList<Automaton> automatonList = new ArrayList<>();
+
+    @FXML
+    private Button solveTasksMenuButton;
+
+    @FXML
+    private Button generationMenuButton;
 
     @FXML
     private Button authorsButton;
 
     @FXML
-    private Button generateSyncAutomatonButton;
+    private Button exitButton;
 
     @FXML
-    private Button tableAndRegexAutomatonInputButton;
-
-    @FXML
-    private Button tableAutomatonInputButton;
-
-    @FXML
-    private Button tableAutomatonInputWithSyncCheckButton;
-
-    @FXML
-    private Button searchSubstringsInTextButton;
-
-    @FXML
-    void initialize() {
+    private void initialize() {
+        setupTaskButton(solveTasksMenuButton, "/solveTasksMenu.fxml");
+        setupTaskButton(generationMenuButton, "/generationMenu.fxml");
         initAuthorsButton();
-        setupTaskButton(tableAutomatonInputButton, "/automatonInput.fxml");
-        setupTaskButton(tableAndRegexAutomatonInputButton, "/automatonAndRegexInput.fxml");
-        setupTaskButton(tableAutomatonInputWithSyncCheckButton, "/automatonSyncInput.fxml");
-        setupTaskButton(generateSyncAutomatonButton, "/automatonSyncGenerationInput.fxml");
-        setupTaskButton(searchSubstringsInTextButton, "/substringsInTextMenu.fxml");
+        initExitButton();
     }
 
     @FXML
@@ -54,6 +47,11 @@ public class Controller {
             Loader.loadFxml("/authors.fxml", false);
         });
     }
+
+    @FXML
+    private void initExitButton() {
+        exitButton.setOnAction(event -> {
+            Platform.exit();
+        });
+    }
 }
-
-

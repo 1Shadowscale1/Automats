@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" style="-fx-background-color: #2e3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.GenerationMenuController">
+    <children>
+        <Button fx:id="generateSyncAutomatonButton" layoutX="30.0" layoutY="180.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="660.0" text="Генерация синхронизируемых автоматов">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="generateTasksButton" layoutX="30.0" layoutY="280.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="660.0" text="Генерация вариантов для задачи поиска подстрок в тексте">
+            <font>
+                <Font size="15.0" />
+            </font>
+        </Button>
+        <Button fx:id="backButton" layoutX="642.0" layoutY="14.0" mnemonicParsing="false" text="Назад">
+            <font>
+                <Font size="13.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>

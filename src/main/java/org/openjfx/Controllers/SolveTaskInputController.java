@@ -1,5 +1,7 @@
 package org.openjfx.Controllers;
 
+import static org.openjfx.Controllers.Controller.automatonList;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SolveTaskInputController {
-
     public static final List<String> inputData = new ArrayList<>();
 
     @FXML
@@ -49,7 +50,8 @@ public class SolveTaskInputController {
     private static void setupButtonAsReturnToPreviousState(Button button) {
         button.setOnAction(event -> {
             button.getScene().getWindow().hide();
-            Loader.loadFxml("/substringsInTextMenu.fxml", false);
+            automatonList.clear();
+            Loader.loadFxml("/solveTasksMenu.fxml", false);
         });
     }
 

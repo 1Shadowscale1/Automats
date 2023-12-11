@@ -12,6 +12,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
+import static org.openjfx.Controllers.Controller.automatonList;
+
 import java.io.IOException;
 
 public class TasksGenerationInputController {
@@ -45,7 +47,8 @@ public class TasksGenerationInputController {
     private static void setupButtonAsReturnToPreviousState(Button button) {
         button.setOnAction(event -> {
             button.getScene().getWindow().hide();
-            Loader.loadFxml("/substringsInTextMenu.fxml", false);
+            automatonList.clear();
+            Loader.loadFxml("/generationMenu.fxml", false);
         });
     }
 

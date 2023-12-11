@@ -67,7 +67,7 @@ public class AutomatonAndRegexInputController extends AutomatonInputController {
                     return;
                 }
 
-                returnToStartButton.getScene().getWindow().hide();
+                returnToPreviousStateButton.getScene().getWindow().hide();
 
                 String[][] jumpTable = new String[states.length][alphabet.length + 1];
 

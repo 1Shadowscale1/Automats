@@ -1,25 +1,24 @@
 package org.openjfx.Controllers;
 
+import static org.openjfx.Controllers.AutomatonInputController.setupButtonAsReturnToStart;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
-import static org.openjfx.Controllers.AutomatonInputController.setupButtonAsReturnToStart;
-
-public class SubstringsInTextMenuController {
-
+public class GenerationMenuController {
     @FXML
     private Button backButton;
+
+    @FXML
+    private Button generateSyncAutomatonButton;
 
     @FXML
     private Button generateTasksButton;
 
     @FXML
-    private Button solveTaskInputButton;
-
-    @FXML
-    void initialize() {
+    private void initialize() {
         setupButtonAsReturnToStart(backButton);
-        setupTaskButton(solveTaskInputButton, "/solveTaskInput.fxml");
+        setupTaskButton(generateSyncAutomatonButton, "/automatonSyncGenerationInput.fxml");
         setupTaskButton(generateTasksButton, "/tasksGenerationInput.fxml");
     }
 

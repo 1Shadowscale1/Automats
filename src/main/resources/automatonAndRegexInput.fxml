@@ -6,7 +6,7 @@
 
 <AnchorPane fx:id="inputWindowMainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #2e3348;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.Controllers.AutomatonAndRegexInputController">
     <children>
-      <Button fx:id="returnToStartButton" layoutX="537.0" layoutY="14.0" mnemonicParsing="false" text="Назад" />
+      <Button fx:id="returnToPreviousStateButton" layoutX="537.0" layoutY="14.0" mnemonicParsing="false" text="Назад" />
       <TextField fx:id="statesCountField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="396.0" promptText="Введите количество состояний автомата" style="-fx-background-color: #fafafa;" />
       <Button fx:id="createTableButton" layoutX="14.0" layoutY="77.0" mnemonicParsing="false" text="Создать таблицу" />
       <TextField fx:id="alphabetField" layoutX="14.0" layoutY="46.0" prefHeight="25.0" prefWidth="396.0" promptText="Введите буквы алфавита через запятую, например &quot;a, b, c&quot; или &quot;0, 1&quot;" style="-fx-background-color: #fafafa;" />

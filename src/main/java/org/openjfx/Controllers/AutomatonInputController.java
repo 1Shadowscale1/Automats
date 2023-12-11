@@ -30,7 +30,7 @@ public class AutomatonInputController {
     protected TextField alphabetField;
 
     @FXML
-    protected Button returnToStartButton;
+    protected Button returnToPreviousStateButton;
 
     @FXML
     protected Button createTableButton;
@@ -47,11 +47,20 @@ public class AutomatonInputController {
 
     @FXML
     protected void initialize() {
-        setupButtonAsReturnToStart(returnToStartButton);
+        setupButtonAsReturnToPreviousState(returnToPreviousStateButton);
         initCreateTableButton();
         setupStatesCountField();
         setupAlphabetField();
         inputCorrectnessText = new Text();
+    }
+
+    @FXML
+    public static void setupButtonAsReturnToPreviousState(Button button) {
+        button.setOnAction(event -> {
+            button.getScene().getWindow().hide();
+            automatonList.clear();
+            Loader.loadFxml("/solveTasksMenu.fxml", false);
+        });
     }
 
     public static void setupButtonAsReturnToStart(Button button) {
@@ -197,7 +206,7 @@ public class AutomatonInputController {
                 if (!checkAlphabetAndStatesCorrectness(states, alphabet))
                     return;
 
-                returnToStartButton.getScene().getWindow().hide();
+                returnToPreviousStateButton.getScene().getWindow().hide();
 
                 String[][] jumpTable = new String[states.length][alphabet.length + 1];
 

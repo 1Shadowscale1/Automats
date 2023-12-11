@@ -23,10 +23,19 @@ public class AutomatonSyncGenerationInputController extends AutomatonInputContro
 
     @FXML
     protected void initialize() {
-        setupButtonAsReturnToStart(returnToStartButton);
+        setupButtonAsReturnToPreviousState(returnToPreviousStateButton);
         setupStatesCountField();
         this.setupAlphabetField(this.alphabetField);
         setupGenerateSyncAutomatonButton(generateSyncAutomatonButton);
+    }
+
+    @FXML
+    public static void setupButtonAsReturnToPreviousState(Button button) {
+        button.setOnAction(event -> {
+            button.getScene().getWindow().hide();
+            automatonList.clear();
+            Loader.loadFxml("/generationMenu.fxml", false);
+        });
     }
 
     @FXML
