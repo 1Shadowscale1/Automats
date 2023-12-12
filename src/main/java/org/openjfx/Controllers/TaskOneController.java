@@ -206,7 +206,7 @@ public class TaskOneController {
         TableView<String[]> automatonTableView = new TableView<>();
 
         int stateColumnWidth = 150;
-        int regularColumnWidth = 75;
+        int regularColumnWidth = 50;
         int width;
 
         for (int i = 0; i < automaton.letters.size() + 1; i++) {
@@ -229,10 +229,10 @@ public class TaskOneController {
 
         automatonTableView.setItems(data);
         automatonTableView.setFixedCellSize(25);
-        automatonTableView.prefHeightProperty().bind(Bindings.size(automatonTableView.getItems()).multiply(automatonTableView.getFixedCellSize()).add(26));
-        automatonTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(automatonTableView.getFixedCellSize()).add(26));
-        automatonTableView.prefWidthProperty().bind(new SimpleIntegerProperty(2 + stateColumnWidth + regularColumnWidth * automaton.letters.size()));
-        automatonTableView.maxWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 10));
+        automatonTableView.prefHeightProperty().bind(Bindings.size(automatonTableView.getItems()).multiply(automatonTableView.getFixedCellSize()).add(34));
+        automatonTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(automatonTableView.getFixedCellSize()).add(34));
+        automatonTableView.prefWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
+        automatonTableView.maxWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
 
         return automatonTableView;
     }
@@ -279,8 +279,10 @@ public class TaskOneController {
 
         isomorphismTableView.setItems(data);
         isomorphismTableView.setFixedCellSize(25);
-        isomorphismTableView.prefHeightProperty().bind(Bindings.size(isomorphismTableView.getItems()).multiply(isomorphismTableView.getFixedCellSize()).add(26));
-        isomorphismTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(isomorphismTableView.getFixedCellSize()).add(26));
+        isomorphismTableView.prefHeightProperty().bind(Bindings.size(isomorphismTableView.getItems()).multiply(isomorphismTableView.getFixedCellSize()).add(34));
+        isomorphismTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(isomorphismTableView.getFixedCellSize()).add(34));
+        isomorphismTableView.prefWidthProperty().bind(new SimpleIntegerProperty(columnWidth * 2));
+        isomorphismTableView.maxWidthProperty().bind(new SimpleIntegerProperty(columnWidth * 2));
 
         return isomorphismTableView;
     }

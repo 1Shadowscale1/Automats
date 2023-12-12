@@ -249,7 +249,7 @@ public class AutomatonInputController {
         automatonTableView.setEditable(true);
 
         int stateColumnWidth = 150;
-        int regularColumnWidth = 75;
+        int regularColumnWidth = 50;
         int width;
 
 
@@ -287,11 +287,11 @@ public class AutomatonInputController {
         }
 
         automatonTableView.setItems(tableData);
-        automatonTableView.setFixedCellSize(26);
-        automatonTableView.prefHeightProperty().bind(Bindings.size(automatonTableView.getItems()).multiply(automatonTableView.getFixedCellSize()).add(26));
-        automatonTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(automatonTableView.getFixedCellSize()).add(26));
-        automatonTableView.prefWidthProperty().bind(new SimpleIntegerProperty(2 + stateColumnWidth + regularColumnWidth * alphabet.length));
-        automatonTableView.maxWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 10));
+        automatonTableView.setFixedCellSize(25);
+        automatonTableView.prefHeightProperty().bind(Bindings.size(automatonTableView.getItems()).multiply(automatonTableView.getFixedCellSize()).add(34));
+        automatonTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(automatonTableView.getFixedCellSize()).add(34));
+        automatonTableView.prefWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
+        automatonTableView.maxWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
         return automatonTableView;
     }
 

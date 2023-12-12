@@ -13,9 +13,6 @@ public class SolveTasksMenuController {
     private Button tableAutomatonInputButton;
 
     @FXML
-    private Button tableAndRegexAutomatonInputButton;
-
-    @FXML
     private Button tableAutomatonInputWithSyncCheckButton;
 
     @FXML
@@ -28,7 +25,6 @@ public class SolveTasksMenuController {
     private void initialize() {
         setupButtonAsReturnToStart(backButton);
         setupTaskButton(tableAutomatonInputButton, "/automatonInput.fxml");
-        setupTaskButton(tableAndRegexAutomatonInputButton, "/automatonAndRegexInput.fxml");
         setupTaskButton(tableAutomatonInputWithSyncCheckButton, "/automatonSyncInput.fxml");
         setupTaskButton(solveTaskInputButton, "/solveTaskInput.fxml");
         setupStub(regexInputButton);

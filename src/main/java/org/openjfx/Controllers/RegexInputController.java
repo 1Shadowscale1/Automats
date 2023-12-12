@@ -24,7 +24,7 @@ public class RegexInputController {
 
     @FXML
     void initialize() {
-        initCreateTableButton();
+        initPane();
     }
 
     @FXML
@@ -36,7 +36,7 @@ public class RegexInputController {
         });
     }
 
-    protected void initCreateTableButton() {
+    protected void initPane() {
             try {
                 TextField regexTextField = AutomatonInputController.getTextFieldWithPrompt("Введите регулярное выражение, '*' - итерация, '+' - объединение, 'λ' - символ пустого слов, две буквы рядом - конкатенация", 715);
                 regexTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -125,7 +125,7 @@ public class RegexInputController {
     }
 
     private Button getCreateAutomatonButton(TextField regexTextField) {
-        Button createAutomatonButton = new Button("Создать автоматы");
+        Button createAutomatonButton = new Button("Создать автомат");
         createAutomatonButton.setOnAction(event2 -> {
             Automaton regexBasedAutomaton;
             try {
