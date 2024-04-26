@@ -2,11 +2,14 @@ package automaton;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Automaton implements Cloneable, Serializable {
@@ -25,6 +28,12 @@ public class Automaton implements Cloneable, Serializable {
         this.jumpTable = jumpTable;
         this.vertices = Lists.newArrayList(jumpTable.rowKeySet());
         this.letters = Lists.newArrayList(jumpTable.columnKeySet());
+        this.startVertex = startVertex;
+        this.finalVertices = finalVertices;
+    }
+
+    public Automaton(Boolean isFinalized, String startVertex, List<String> finalVertices) {
+        this.isFinalized = isFinalized;
         this.startVertex = startVertex;
         this.finalVertices = finalVertices;
     }
@@ -70,6 +79,32 @@ public class Automaton implements Cloneable, Serializable {
         if (!vertices.contains(vertex)) throw new IllegalArgumentException(NON_EXISTING_VERTEX);
         List<String> distinctJumps = getAllJumpsByVertex(vertex).stream().distinct().collect(Collectors.toList());
         return distinctJumps.size() == 1 && distinctJumps.contains(vertex) && !finalVertices.contains(vertex);
+    }
+
+    public boolean isAutomatonFullAndWithoutStockVertices() {
+        Set<String> reachedVertexes = Sets.newHashSet();
+        reachedVertexes.add(startVertex);
+
+        while (true) {
+            Set<String> iteratedReachedVertexes = Sets.newHashSet();
+            reachedVertexes.forEach(x -> iteratedReachedVertexes.addAll(getAllJumpsByVertex(x)));
+            iteratedReachedVertexes.addAll(reachedVertexes);
+
+            if (iteratedReachedVertexes.equals(reachedVertexes))
+                break;
+
+            reachedVertexes = iteratedReachedVertexes;
+        }
+
+        Set<String> notReachedVertexes = Sets.difference(new HashSet<>(vertices), reachedVertexes);
+        if (!notReachedVertexes.isEmpty())
+            return false;
+
+        for (String vertex : vertices)
+            if (isVertexStock(vertex))
+                return false;
+
+        return true;
     }
 
     @Override

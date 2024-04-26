@@ -22,12 +22,20 @@ public class SolveTasksMenuController {
     private Button regexInputButton;
 
     @FXML
+    private Button tableAutomatonInputWithReverseCheckButton;
+
+    @FXML
+    private Button solveClosuresTasksMenuButton;
+
+    @FXML
     private void initialize() {
         setupButtonAsReturnToStart(backButton);
         setupTaskButton(tableAutomatonInputButton, "/automatonInput.fxml");
         setupTaskButton(tableAutomatonInputWithSyncCheckButton, "/automatonSyncInput.fxml");
         setupTaskButton(solveTaskInputButton, "/solveTaskInput.fxml");
         setupStub(regexInputButton);
+        setupTaskButton(tableAutomatonInputWithReverseCheckButton, "/automatonReverseInput.fxml");
+        setupTaskButton(solveClosuresTasksMenuButton, "/solveClosuresTasksMenu.fxml");
     }
 
     @FXML

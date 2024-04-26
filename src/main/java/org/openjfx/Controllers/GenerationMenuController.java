@@ -16,10 +16,18 @@ public class GenerationMenuController {
     private Button generateTasksButton;
 
     @FXML
+    private Button generateAutomatonReverseButton;
+
+    @FXML
+    private Button generateAutomatonClosureButton;
+
+    @FXML
     private void initialize() {
         setupButtonAsReturnToStart(backButton);
         setupTaskButton(generateSyncAutomatonButton, "/automatonSyncGenerationInput.fxml");
         setupTaskButton(generateTasksButton, "/tasksGenerationInput.fxml");
+        setupTaskButton(generateAutomatonReverseButton, "/automatonReverseGenerationInput.fxml");
+        setupTaskButton(generateAutomatonClosureButton, "/automatonClosureGenerationInput.fxml");
     }
 
     @FXML

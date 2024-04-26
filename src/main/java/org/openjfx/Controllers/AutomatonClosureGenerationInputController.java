@@ -1,6 +1,7 @@
 package org.openjfx.Controllers;
 
-import algorithms.GeneratePDFTaskAndAnswer;
+import static org.openjfx.Controllers.TasksGenerationInputController.setupButtonAsReturnToPreviousState;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,20 +13,18 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
-import static org.openjfx.Controllers.Controller.automatonList;
-
-import java.io.IOException;
-
-public class TasksGenerationInputController {
+public class AutomatonClosureGenerationInputController {
+    @FXML
+    private Button returnToPreviousStateButton;
 
     @FXML
     private TextField optionsCountField;
 
     @FXML
-    private TextField wordsCountField;
+    private TextField statesCountField;
 
     @FXML
-    private Button returnToPreviousStateButton;
+    private TextField lettersCountField;
 
     @FXML
     private Button generateTasksButton;
@@ -39,17 +38,9 @@ public class TasksGenerationInputController {
     void initialize() {
         setupButtonAsReturnToPreviousState(returnToPreviousStateButton);
         setupCountField(optionsCountField);
-        setupCountField(wordsCountField);
+        setupCountField(statesCountField);
+        setupCountField(lettersCountField);
         setupTaskButton(generateTasksButton);
-    }
-
-    @FXML
-    public static void setupButtonAsReturnToPreviousState(Button button) {
-        button.setOnAction(event -> {
-            button.getScene().getWindow().hide();
-            automatonList.clear();
-            Loader.loadFxml("/generationMenu.fxml", false);
-        });
     }
 
     private void setupCountField(TextField countField) {
@@ -68,15 +59,7 @@ public class TasksGenerationInputController {
 
             button.getScene().getWindow().hide();
 
-            GeneratePDFTaskAndAnswer generatePDFTaskAndAnswer = new GeneratePDFTaskAndAnswer
-                (Integer.parseInt(wordsCountField.getText()), Integer.parseInt(optionsCountField.getText()));
-            generatePDFTaskAndAnswer.generateStringAndPattern();
-            try {
-                generatePDFTaskAndAnswer.generatePdfTask();
-                generatePDFTaskAndAnswer.generatePdfAnswer();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            // TODO: add generator
 
             Alert informationDialog = new Alert(AlertType.INFORMATION);
             informationDialog.setTitle("Генерация вариантов");
@@ -90,11 +73,13 @@ public class TasksGenerationInputController {
 
     private boolean checkInputCorrectness() {
         inputWindowMainPane.getChildren().remove(inputCorrectnessText);
-        if (optionsCountField.getText().isBlank() || wordsCountField.getText().isBlank())
+        if (optionsCountField.getText().isBlank() || statesCountField.getText().isBlank()
+                || lettersCountField.getText().isBlank())
             return false;
 
         int optionsCount = Integer.parseInt(optionsCountField.getText());
-        int wordsCount = Integer.parseInt(wordsCountField.getText());
+        int statesCount = Integer.parseInt(statesCountField.getText());
+        int lettersCount = Integer.parseInt(lettersCountField.getText());
 
         if (optionsCount < 25 || optionsCount > 30) {
             inputCorrectnessText = new Text("Количество вариантов: от 25 до 30");
@@ -106,8 +91,18 @@ public class TasksGenerationInputController {
             return false;
         }
 
-        if (wordsCount < 1 || wordsCount > 3) {
-            inputCorrectnessText = new Text("Количество слов в тексте: от 1 до 3");
+        if (statesCount < 2 || statesCount > 5) {
+            inputCorrectnessText = new Text("Количество состояний в автомате: от 2 до 5");
+            inputCorrectnessText.setFill(Color.RED);
+            inputCorrectnessText.setFont(Font.font("System", FontPosture.ITALIC, 14));
+            AnchorPane.setBottomAnchor(inputCorrectnessText, 10.0);
+            AnchorPane.setLeftAnchor(inputCorrectnessText, 10.0);
+            inputWindowMainPane.getChildren().add(inputCorrectnessText);
+            return false;
+        }
+
+        if (lettersCount < 1 || lettersCount > 4) {
+            inputCorrectnessText = new Text("Количество букв в алфавите: от 1 до 3");
             inputCorrectnessText.setFill(Color.RED);
             inputCorrectnessText.setFont(Font.font("System", FontPosture.ITALIC, 14));
             AnchorPane.setBottomAnchor(inputCorrectnessText, 10.0);
