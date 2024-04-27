@@ -12,7 +12,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
 
-public class GeneratePDFTaskAndAnswer {
+public class GenerateSubstringPDF {
     private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final int MIN_LENGTH = 4;
     private static final int MAX_LENGTH = 5;
@@ -20,9 +20,9 @@ public class GeneratePDFTaskAndAnswer {
     private static int wordCount; //колличество слов в генерируемом предложении
     private static int optionCount; //колличество вариантов
     static Map<String, String> stringAndSubstring = new HashMap<>();
-    public GeneratePDFTaskAndAnswer(int wordCount, int optionCount) {
-        GeneratePDFTaskAndAnswer.wordCount = wordCount;
-        GeneratePDFTaskAndAnswer.optionCount = optionCount;
+    public GenerateSubstringPDF(int wordCount, int optionCount) {
+        GenerateSubstringPDF.wordCount = wordCount;
+        GenerateSubstringPDF.optionCount = optionCount;
     }
 
     public void generateStringAndPattern() {
@@ -117,22 +117,7 @@ public class GeneratePDFTaskAndAnswer {
 
             List<String> output = algorithms.KnuthMorrisPratt.KMP(entry.getValue(), entry.getKey());
 
-            Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-            Font mainFont = new Font(Font.HELVETICA, 14);
-            Chunk optionChunk = new Chunk("Option " + i + "\n", mainFont);
-            Chunk isAChunk = new Chunk("Is a ", FontFactory.getFont(FontFactory.HELVETICA));
-            Chunk valueChunk = new Chunk(entry.getValue(), boldFont);
-            Chunk substringChunk = new Chunk(" substring of a string ", FontFactory.getFont(FontFactory.HELVETICA));
-            Chunk keyChunk = new Chunk(entry.getKey(), boldFont);
-            Chunk questionMarkChunk = new Chunk(" ?\n" + "\n",FontFactory.getFont(FontFactory.HELVETICA));
-            Paragraph paragraph = new Paragraph();
-            paragraph.add(optionChunk);
-            paragraph.add(isAChunk);
-            paragraph.add(valueChunk);
-            paragraph.add(substringChunk);
-            paragraph.add(keyChunk);
-            paragraph.add(questionMarkChunk);
-            document.add(paragraph);
+            fillPDF(i, document, entry);
 
             List<List<String>> out1 = createPrefixTable(output);
             List<String> out2 = new ArrayList<>(output);
@@ -179,6 +164,25 @@ public class GeneratePDFTaskAndAnswer {
 
     }
 
+    private void fillPDF(int i, Document document, Map.Entry<String, String> entry) {
+        Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
+        Font mainFont = new Font(Font.HELVETICA, 14);
+        Chunk optionChunk = new Chunk("Option " + i + "\n", mainFont);
+        Chunk isAChunk = new Chunk("Is a ", FontFactory.getFont(FontFactory.HELVETICA));
+        Chunk valueChunk = new Chunk(entry.getValue(), boldFont);
+        Chunk substringChunk = new Chunk(" substring of a string ", FontFactory.getFont(FontFactory.HELVETICA));
+        Chunk keyChunk = new Chunk(entry.getKey(), boldFont);
+        Chunk questionMarkChunk = new Chunk(" ?\n" + "\n",FontFactory.getFont(FontFactory.HELVETICA));
+        Paragraph paragraph = new Paragraph();
+        paragraph.add(optionChunk);
+        paragraph.add(isAChunk);
+        paragraph.add(valueChunk);
+        paragraph.add(substringChunk);
+        paragraph.add(keyChunk);
+        paragraph.add(questionMarkChunk);
+        document.add(paragraph);
+    }
+
     public void generatePdfTask() throws IOException {
         int i = 0;
         Document document = new Document();
@@ -187,22 +191,7 @@ public class GeneratePDFTaskAndAnswer {
         document.open();
         for (Map.Entry<String, String> entry : stringAndSubstring.entrySet()) {
             //String f = "Option " + i + " \n" + "Is a "  + entry.getValue() + " substring of a string " + entry.getKey() + " ?";
-            Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-            Font mainFont = new Font(Font.HELVETICA, 14);
-            Chunk optionChunk = new Chunk("Option " + i + "\n", mainFont);
-            Chunk isAChunk = new Chunk("Is a ", FontFactory.getFont(FontFactory.HELVETICA));
-            Chunk valueChunk = new Chunk(entry.getValue(), boldFont);
-            Chunk substringChunk = new Chunk(" substring of a string ", FontFactory.getFont(FontFactory.HELVETICA));
-            Chunk keyChunk = new Chunk(entry.getKey(), boldFont);
-            Chunk questionMarkChunk = new Chunk(" ?\n" + "\n",FontFactory.getFont(FontFactory.HELVETICA));
-            Paragraph paragraph = new Paragraph();
-            paragraph.add(optionChunk);
-            paragraph.add(isAChunk);
-            paragraph.add(valueChunk);
-            paragraph.add(substringChunk);
-            paragraph.add(keyChunk);
-            paragraph.add(questionMarkChunk);
-            document.add(paragraph);
+            fillPDF(i, document, entry);
             i++;
 
         }

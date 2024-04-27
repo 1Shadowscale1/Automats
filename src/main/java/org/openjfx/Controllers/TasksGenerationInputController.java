@@ -1,6 +1,6 @@
 package org.openjfx.Controllers;
 
-import algorithms.GeneratePDFTaskAndAnswer;
+import algorithms.GenerateSubstringPDF;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -68,7 +68,7 @@ public class TasksGenerationInputController {
 
             button.getScene().getWindow().hide();
 
-            GeneratePDFTaskAndAnswer generatePDFTaskAndAnswer = new GeneratePDFTaskAndAnswer
+            GenerateSubstringPDF generatePDFTaskAndAnswer = new GenerateSubstringPDF
                 (Integer.parseInt(wordsCountField.getText()), Integer.parseInt(optionsCountField.getText()));
             generatePDFTaskAndAnswer.generateStringAndPattern();
             try {
