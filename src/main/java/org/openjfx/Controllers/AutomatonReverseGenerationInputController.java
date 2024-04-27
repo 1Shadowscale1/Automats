@@ -2,6 +2,8 @@ package org.openjfx.Controllers;
 
 import static org.openjfx.Controllers.TasksGenerationInputController.setupButtonAsReturnToPreviousState;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,6 +14,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+
+import algorithms.ReverseAutomatonsGenerator;
 
 public class AutomatonReverseGenerationInputController {
     @FXML
@@ -61,10 +65,22 @@ public class AutomatonReverseGenerationInputController {
 
             // TODO: add generator
 
+            ReverseAutomatonsGenerator reverseAutomatonsGenerator = new ReverseAutomatonsGenerator(
+                    Integer.parseInt(optionsCountField.getText()),
+                    Integer.parseInt(statesCountField.getText()),
+                    Integer.parseInt(lettersCountField.getText()));
+            reverseAutomatonsGenerator.generateReverseAutomatons();
+            try {
+                reverseAutomatonsGenerator.createTasksPdfFile();
+                reverseAutomatonsGenerator.createAnswersPdfFile();
+            } catch (IOException e) {
+                throw new RuntimeException();
+            }
+
             Alert informationDialog = new Alert(AlertType.INFORMATION);
             informationDialog.setTitle("Генерация вариантов");
             informationDialog.setHeaderText(null);
-            informationDialog.setContentText("Варианты успешно сгенерированы! Их можно найти в текущей директории");
+            informationDialog.setContentText("Варианты успешно сгенерированы! Их можно найти в директории tasks");
             informationDialog.showAndWait();
 
             Loader.loadFxml("/generationMenu.fxml", false);

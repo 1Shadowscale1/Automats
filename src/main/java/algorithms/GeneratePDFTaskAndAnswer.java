@@ -110,8 +110,14 @@ public class GeneratePDFTaskAndAnswer {
     public void generatePdfAnswer() throws IOException {
         int i = 0;
         Document document = new Document();
-        String absolutePath = new File("answer.pdf").getAbsolutePath();
-        PdfWriter.getInstance(document, new FileOutputStream(absolutePath));
+
+        File directory = new File("tasks");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        PdfWriter.getInstance(document, new FileOutputStream(new File("tasks/substring_answer.pdf")));
+
         document.open();
         for (Map.Entry<String, String> entry : stringAndSubstring.entrySet()) {
 
@@ -182,8 +188,14 @@ public class GeneratePDFTaskAndAnswer {
     public void generatePdfTask() throws IOException {
         int i = 0;
         Document document = new Document();
-        String absolutePath = new File("task.pdf").getAbsolutePath();
-        PdfWriter.getInstance(document, new FileOutputStream(absolutePath));
+
+        File directory = new File("tasks");
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+
+        PdfWriter.getInstance(document, new FileOutputStream(new File("tasks/substring_task.pdf")));
+
         document.open();
         for (Map.Entry<String, String> entry : stringAndSubstring.entrySet()) {
             //String f = "Option " + i + " \n" + "Is a "  + entry.getValue() + " substring of a string " + entry.getKey() + " ?";
