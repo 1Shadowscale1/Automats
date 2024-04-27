@@ -2,6 +2,7 @@ package org.openjfx.Controllers;
 
 import static org.openjfx.Controllers.TasksGenerationInputController.setupButtonAsReturnToPreviousState;
 
+import algorithms.GenerateSubstringPDF;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,6 +13,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
+import pdf.PDFGenerator;
+import pdf.PDFVersion;
+import pdf.ReverseTask.PDFReverseGenerator;
+
+import java.io.IOException;
 
 public class AutomatonReverseGenerationInputController {
     @FXML
@@ -59,7 +65,17 @@ public class AutomatonReverseGenerationInputController {
 
             button.getScene().getWindow().hide();
 
-            // TODO: add generator
+            PDFGenerator pdfGenerator =
+                    new PDFReverseGenerator(
+                            Integer.parseInt(optionsCountField.getText()),
+                            Integer.parseInt(statesCountField.getText()),
+                            Integer.parseInt(lettersCountField.getText())
+                    );
+            try {
+                pdfGenerator.generateFile(PDFVersion.TEACHER);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
             Alert informationDialog = new Alert(AlertType.INFORMATION);
             informationDialog.setTitle("Генерация вариантов");
