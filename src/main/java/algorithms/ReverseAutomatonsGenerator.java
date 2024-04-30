@@ -29,6 +29,7 @@ public class ReverseAutomatonsGenerator {
     public List<Automaton> generatedAutsList;
     public List<NFAutomaton> reverseNfAutsList;
     public List<Automaton> reverseAutsList;
+    public List<Automaton> minimizedDFAutsList;
 
     public ReverseAutomatonsGenerator(int automatonsNumber, int verticesNumber, int lettersNumber) {
         this.automatonsNumber = automatonsNumber;
@@ -37,6 +38,7 @@ public class ReverseAutomatonsGenerator {
         this.generatedAutsList = new ArrayList<>();
         this.reverseNfAutsList = new ArrayList<>();
         this.reverseAutsList = new ArrayList<>();
+        this.minimizedDFAutsList = new ArrayList<>();
     }
 
     public void generateReverseAutomatons() {
@@ -70,9 +72,15 @@ public class ReverseAutomatonsGenerator {
             Automaton generatedAut = new Automaton(false, currentTable, startVertex, finalVertices);
             NFAutomaton reverseNfAut = Reverse.reverseAutomaton(generatedAut);
 
+            Automaton reverseAut = reverseNfAut.transformNFA2DFA();
+            try {
+                minimizedDFAutsList.add(Adduction.buildAdductedAutomat(reverseAut));
+            } catch (CloneNotSupportedException ignored) {
+            }
+
             generatedAutsList.add(generatedAut);
             reverseNfAutsList.add(reverseNfAut);
-            reverseAutsList.add(reverseNfAut.transformNFA2DFA());
+            reverseAutsList.add(reverseAut);
         }
     }
 
@@ -150,6 +158,12 @@ public class ReverseAutomatonsGenerator {
 
             Automaton reverseAut = reverseAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, reverseAut);
+
+            Chunk minimizeDFAChunk = new Chunk("Minimized DFA\n", mainFont);
+            paragraph.add(minimizeDFAChunk);
+
+            Automaton minimizeAut = minimizedDFAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizeAut);
         }
 
         document.add(paragraph);

@@ -32,6 +32,7 @@ public class ClosureAutomatonsGenerator {
     public List<NFAutomaton> subwordNfAutsList;
     public List<Automaton> suffixAutsList;
     public List<Automaton> subwordAutsList;
+    public List<Automaton> minimizedDFAutsList;
 
     public ClosureAutomatonsGenerator(int automatonsNumber, int verticesNumber, int lettersNumber) {
         this.automatonsNumber = automatonsNumber;
@@ -43,6 +44,7 @@ public class ClosureAutomatonsGenerator {
         this.subwordNfAutsList = new ArrayList<>();
         this.suffixAutsList = new ArrayList<>();
         this.subwordAutsList = new ArrayList<>();
+        this.minimizedDFAutsList = new ArrayList<>();
     }
 
     public void generateClosureAutomatons() {
@@ -89,6 +91,14 @@ public class ClosureAutomatonsGenerator {
                     suffixAutsList.add(suffixAut.transformNFA2DFA());
                     subwordNfAutsList.add(subwordAut);
                     subwordAutsList.add(subwordAut.transformNFA2DFA());
+
+                    try {
+                        //TODO: Какой минимизировать?
+                        //suffixAut.transformNFA2DFA() или subwordAut.transformNFA2DFA()
+                        //Вопрос: префиксный автомат не надо детерминировать? (мотивировано TaskNine)
+                        minimizedDFAutsList.add(Adduction.buildAdductedAutomat(suffixAut.transformNFA2DFA()));
+                    } catch (CloneNotSupportedException ignored) {
+                    }
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -191,6 +201,12 @@ public class ClosureAutomatonsGenerator {
 
             Automaton subwordAut = subwordAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, subwordAut);
+
+            Chunk minimizeDFAChunk = new Chunk("Minimized Suffix-closure DFA\n", mainFont);
+            paragraph.add(minimizeDFAChunk);
+
+            Automaton minimizeAut = minimizedDFAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizeAut);
         }
 
         document.add(paragraph);

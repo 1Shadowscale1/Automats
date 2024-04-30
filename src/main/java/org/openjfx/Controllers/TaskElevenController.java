@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import algorithms.Adduction;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -197,10 +198,27 @@ public class TaskElevenController {
 
             var returnToStartButton = new Button("Вернуться в начало");
             setupButtonAsReturnToStart(returnToStartButton);
-            AnchorPane.setTopAnchor(returnToStartButton, 10.0);
+            AnchorPane.setBottomAnchor(returnToStartButton, 10.0);
             AnchorPane.setRightAnchor(returnToStartButton, 10.0);
 
             newPane.getChildren().add(returnToStartButton);
+
+            Automaton minimizedAut = null;
+            try {
+                minimizedAut = Adduction.buildAdductedAutomat(nfAutomaton.transformNFA2DFA());
+            } catch (CloneNotSupportedException ignored) {
+                // :)
+            }
+            TableView<String[]> minAutomatonTableView = TaskOneController.createAutomatonJumpTableTableView(minimizedAut);
+
+            Text minAutomatonInfo = new Text("Преобразованный автомат в минимизированном виде");
+            minAutomatonInfo.setFill(Color.WHITESMOKE);
+            minAutomatonInfo.setFont(Font.font("System", 20));
+
+            var newPane2 = getMainPane(minAutomatonTableView, minAutomatonInfo);
+            AnchorPane.setRightAnchor(newPane2, 10.0);
+            AnchorPane.setTopAnchor(newPane2, 10.0);
+            newPane.getChildren().add(newPane2);
 
             Loader.showStage(new Scene(newPane), true);
         });
