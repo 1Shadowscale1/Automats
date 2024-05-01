@@ -70,6 +70,17 @@ public class AutomatonReverseInputController extends AutomatonInputController {
             }
 
             Automaton resAutomaton = new Automaton(false, jumpTable, startVertex, Arrays.asList(finalVertices));
+
+            tableWindowMainPane.getChildren().remove(inputCorrectnessText);
+            if (!resAutomaton.isAutomatonFullAndWithoutStockVertices()) {
+                setupInputCorrectnessText(inputCorrectnessText,
+                        "Автомат не должен содержать стоковых вершин и все вершины должны быть достижимы",
+                        automatonTableView);
+                tableWindowMainPane.getChildren().add(inputCorrectnessText);
+                tableWindowMainPane.requestLayout();
+                return;
+            }
+
             automatonList.add(resAutomaton);
             automatonList.add(Reverse.reverseAutomaton(resAutomaton));
 

@@ -107,6 +107,22 @@ public class Automaton implements Cloneable, Serializable {
         return true;
     }
 
+    public void addStockVertex(String vertex) {
+        HashBasedTable<String, String, String> vertexRow = HashBasedTable.create();
+        for (String letter : letters) {
+            vertexRow.put(vertex, letter, vertex);
+        }
+        addVertex(vertex, vertexRow);
+    }
+
+    public void removeStockVertex(String vertex) {
+        if (vertices.contains(vertex)) {
+            finalVertices.remove(vertex);
+            jumpTable.row(vertex).clear();
+            vertices.remove(vertex);
+        }
+    }
+
     @Override
     public Automaton clone() throws CloneNotSupportedException {
         Automaton automaton = (Automaton) super.clone();

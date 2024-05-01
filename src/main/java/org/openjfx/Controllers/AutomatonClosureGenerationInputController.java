@@ -63,8 +63,6 @@ public class AutomatonClosureGenerationInputController {
 
             button.getScene().getWindow().hide();
 
-            // TODO: add generator
-
             ClosureAutomatonsGenerator closureAutomatonsGenerator = new ClosureAutomatonsGenerator(
                     Integer.parseInt(optionsCountField.getText()),
                     Integer.parseInt(statesCountField.getText()),

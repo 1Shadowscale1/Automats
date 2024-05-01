@@ -63,8 +63,6 @@ public class AutomatonReverseGenerationInputController {
 
             button.getScene().getWindow().hide();
 
-            // TODO: add generator
-
             ReverseAutomatonsGenerator reverseAutomatonsGenerator = new ReverseAutomatonsGenerator(
                     Integer.parseInt(optionsCountField.getText()),
                     Integer.parseInt(statesCountField.getText()),

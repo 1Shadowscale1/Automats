@@ -28,10 +28,13 @@ public class ClosureAutomatonsGenerator {
     public int lettersNumber;
     public List<Automaton> generatedAutsList;
     public List<Automaton> prefixAutsList;
+    public List<Automaton> minimizedPrefixAutsList;
     public List<NFAutomaton> suffixNfAutsList;
     public List<NFAutomaton> subwordNfAutsList;
     public List<Automaton> suffixAutsList;
     public List<Automaton> subwordAutsList;
+    public List<Automaton> minimizedSuffixAutsList;
+    public List<Automaton> minimizedSubwordAutsList;
 
     public ClosureAutomatonsGenerator(int automatonsNumber, int verticesNumber, int lettersNumber) {
         this.automatonsNumber = automatonsNumber;
@@ -39,10 +42,13 @@ public class ClosureAutomatonsGenerator {
         this.lettersNumber = lettersNumber;
         this.generatedAutsList = new ArrayList<>();
         this.prefixAutsList = new ArrayList<>();
+        this.minimizedPrefixAutsList = new ArrayList<>();
         this.suffixNfAutsList = new ArrayList<>();
         this.subwordNfAutsList = new ArrayList<>();
         this.suffixAutsList = new ArrayList<>();
         this.subwordAutsList = new ArrayList<>();
+        this.minimizedSuffixAutsList = new ArrayList<>();
+        this.minimizedSubwordAutsList = new ArrayList<>();
     }
 
     public void generateClosureAutomatons() {
@@ -61,12 +67,12 @@ public class ClosureAutomatonsGenerator {
             String startVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
 
             List<String> finalVertices = new ArrayList<>();
-            int finalVerticesCount = 1 + randomInt.nextInt(verticesNumber);
+            int finalVerticesCount = 1 + randomInt.nextInt(verticesNumber - 1);
             Set<String> alreadySeen = new HashSet<>();
             for (int i = 0; i < finalVerticesCount; i++) {
                 String finalVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
 
-                while (alreadySeen.contains(finalVertex)) {
+                while (alreadySeen.contains(finalVertex) || finalVertex.equals(startVertex)) {
                     finalVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
                 }
 
@@ -81,14 +87,24 @@ public class ClosureAutomatonsGenerator {
 
                 try {
                     Automaton prefixAut = Closures.prefixClosure(generatedAut);
+                    Automaton minimizedPrefixAut = Adduction.buildAdductedAutomatFromNotFullDFA(prefixAut);
+
                     NFAutomaton suffixAut = Closures.suffixClosure(generatedAut);
+                    Automaton transformedSuffixAut = suffixAut.transformNFA2DFA();
+                    Automaton minimizedSuffixAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedSuffixAut);
+
                     NFAutomaton subwordAut = Closures.subwordClosure(generatedAut);
+                    Automaton transformedSubwordAut = subwordAut.transformNFA2DFA();
+                    Automaton minimizedSubwordAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedSubwordAut);
 
                     prefixAutsList.add(prefixAut);
+                    minimizedPrefixAutsList.add(minimizedPrefixAut);
                     suffixNfAutsList.add(suffixAut);
-                    suffixAutsList.add(suffixAut.transformNFA2DFA());
+                    suffixAutsList.add(transformedSuffixAut);
+                    minimizedSuffixAutsList.add(minimizedSuffixAut);
                     subwordNfAutsList.add(subwordAut);
-                    subwordAutsList.add(subwordAut.transformNFA2DFA());
+                    subwordAutsList.add(transformedSubwordAut);
+                    minimizedSubwordAutsList.add(minimizedSubwordAut);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -114,7 +130,7 @@ public class ClosureAutomatonsGenerator {
         Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
         Chunk titleChunk = new Chunk(
-                "Task: find prefix, suffix and subword closure of DFA. If NFA found, then transform it to DFA\n\n",
+                "Task: find prefix, suffix and subword closure of DFA. If NFA found, then transform it to DFA and find minimized DFA\n\n",
                 boldFont);
 
         Paragraph paragraph = new Paragraph();
@@ -168,6 +184,12 @@ public class ClosureAutomatonsGenerator {
             Automaton prefixAut = prefixAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, prefixAut);
 
+            Chunk minimizedPrefixDFAChunk = new Chunk("Minimized prefix closure of DFA\n", mainFont);
+            paragraph.add(minimizedPrefixDFAChunk);
+
+            Automaton minimizedPrefixAut = minimizedPrefixAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizedPrefixAut);
+
             Chunk suffixNFAChunk = new Chunk("Suffix closure of DFA\n", mainFont);
             paragraph.add(suffixNFAChunk);
 
@@ -180,6 +202,12 @@ public class ClosureAutomatonsGenerator {
             Automaton suffixAut = suffixAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, suffixAut);
 
+            Chunk minimizedSuffixDFAChunk = new Chunk("Minimized suffix closure of DFA\n", mainFont);
+            paragraph.add(minimizedSuffixDFAChunk);
+
+            Automaton minimizedSuffixAut = minimizedSuffixAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizedSuffixAut);
+
             Chunk subwordNFAChunk = new Chunk("Subword closure of DFA\n", mainFont);
             paragraph.add(subwordNFAChunk);
 
@@ -191,6 +219,12 @@ public class ClosureAutomatonsGenerator {
 
             Automaton subwordAut = subwordAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, subwordAut);
+
+            Chunk minimizedSubwordDFAChunk = new Chunk("Minimized subword closure of DFA\n", mainFont);
+            paragraph.add(minimizedSubwordDFAChunk);
+
+            Automaton minimizedSubwordAut = minimizedSubwordAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizedSubwordAut);
         }
 
         document.add(paragraph);

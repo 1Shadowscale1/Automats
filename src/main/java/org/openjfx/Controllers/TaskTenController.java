@@ -21,6 +21,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.binding.Bindings;
 
+import algorithms.Adduction;
 import automaton.Automaton;
 import automaton.NFAutomaton;
 
@@ -129,23 +130,19 @@ public class TaskTenController {
 
         ObservableList<String[]> data = FXCollections.observableArrayList(jumpTable);
         TableView<String[]> automatonTableView = new TableView<>();
+        automatonTableView.setMinSize(100, 100);
+        automatonTableView.setMaxSize(200, 200);
 
         int stateColumnWidth = 150;
         int regularColumnWidth = 50;
-        int width;
 
         for (int i = 0; i < nfAutomaton.letters.size() + 1; i++) {
             TableColumn<String[], String> tableColumn;
             if (i == 0) {
                 tableColumn = new TableColumn<>("Состояние \\ Буква");
-                width = stateColumnWidth;
             } else {
                 tableColumn = new TableColumn<>(nfAutomaton.letters.get(i - 1).strip());
-                width = regularColumnWidth;
             }
-            tableColumn.setMinWidth(width);
-            tableColumn.setPrefWidth(width);
-            tableColumn.setMaxWidth(width);
             final int columnNumber = i;
             tableColumn.setCellValueFactory(p -> new SimpleStringProperty((p.getValue()[columnNumber])));
             tableColumn.setStyle("-fx-alignment: CENTER;");
@@ -162,6 +159,7 @@ public class TaskTenController {
                 .bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
         automatonTableView.maxWidthProperty()
                 .bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
+        automatonTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         return automatonTableView;
     }
@@ -186,19 +184,35 @@ public class TaskTenController {
         Button button = new Button("Преобразовать НКА в ДКА");
         button.setOnAction(event -> {
             button.getScene().getWindow().hide();
-            Automaton automaton = (nfAutomaton.transformNFA2DFA());
-            TableView<String[]> automatonTableView = TaskOneController.createAutomatonJumpTableTableView(automaton);
+            Automaton transformedAutomaton = (nfAutomaton.transformNFA2DFA());
+            TableView<String[]> transformedAutomatonTableView = TaskOneController
+                    .createAutomatonJumpTableTableView(transformedAutomaton);
 
-            Text automatonInfo = new Text("Преобразованный автомат");
-            automatonInfo.setFill(Color.WHITESMOKE);
-            automatonInfo.setFont(Font.font("System", 20));
+            Automaton minimizedAutomaton;
+            try {
+                minimizedAutomaton = Adduction.buildAdductedAutomatFromNotFullDFA(transformedAutomaton);
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+                return;
+            }
+            TableView<String[]> minimizedAutomatonTableView = TaskOneController
+                    .createAutomatonJumpTableTableView(minimizedAutomaton);
 
-            var newPane = getMainPane(automatonTableView, automatonInfo);
+            Text transformedAutomatonInfo = new Text("Преобразованный автомат");
+            transformedAutomatonInfo.setFill(Color.WHITESMOKE);
+            transformedAutomatonInfo.setFont(Font.font("System", 20));
+
+            Text minimizedAutomatonInfo = new Text("Минимальный автомат");
+            minimizedAutomatonInfo.setFill(Color.WHITESMOKE);
+            minimizedAutomatonInfo.setFont(Font.font("System", 20));
+
+            var newPane = getMainPane(transformedAutomatonTableView, minimizedAutomatonTableView,
+                    transformedAutomatonInfo, minimizedAutomatonInfo);
 
             var returnToStartButton = new Button("Вернуться в начало");
             setupButtonAsReturnToStart(returnToStartButton);
-            AnchorPane.setTopAnchor(returnToStartButton, 10.0);
-            AnchorPane.setRightAnchor(returnToStartButton, 10.0);
+            AnchorPane.setBottomAnchor(returnToStartButton, 10.0);
+            AnchorPane.setLeftAnchor(returnToStartButton, 10.0);
 
             newPane.getChildren().add(returnToStartButton);
 
@@ -207,16 +221,24 @@ public class TaskTenController {
         return button;
     }
 
-    private AnchorPane getMainPane(TableView<String[]> automatonTableView, Text automatonInfo) {
-        AnchorPane mainPane = new AnchorPane(automatonTableView, automatonInfo);
+    private AnchorPane getMainPane(TableView<String[]> firstAutomatonTableView,
+            TableView<String[]> secondAutomatonTableView, Text firstAutomatonInfo, Text secondAutomatonInfo) {
+        AnchorPane mainPane = new AnchorPane(firstAutomatonTableView, secondAutomatonTableView, firstAutomatonInfo,
+                secondAutomatonInfo);
 
         mainPane.setStyle("-fx-background-color: #2e3348;");
 
-        AnchorPane.setLeftAnchor(automatonTableView, 25.0);
-        AnchorPane.setTopAnchor(automatonTableView, 50.0);
+        AnchorPane.setLeftAnchor(firstAutomatonTableView, 25.0);
+        AnchorPane.setTopAnchor(firstAutomatonTableView, 50.0);
 
-        AnchorPane.setLeftAnchor(automatonInfo, 25.0);
-        AnchorPane.setTopAnchor(automatonInfo, 10.0);
+        AnchorPane.setRightAnchor(secondAutomatonTableView, 25.0);
+        AnchorPane.setTopAnchor(secondAutomatonTableView, 50.0);
+
+        AnchorPane.setLeftAnchor(firstAutomatonInfo, 25.0);
+        AnchorPane.setTopAnchor(firstAutomatonInfo, 10.0);
+
+        AnchorPane.setRightAnchor(secondAutomatonInfo, 25.0);
+        AnchorPane.setTopAnchor(secondAutomatonInfo, 10.0);
 
         return mainPane;
     }

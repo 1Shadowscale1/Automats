@@ -29,6 +29,7 @@ public class ReverseAutomatonsGenerator {
     public List<Automaton> generatedAutsList;
     public List<NFAutomaton> reverseNfAutsList;
     public List<Automaton> reverseAutsList;
+    public List<Automaton> minimizedAutsList;
 
     public ReverseAutomatonsGenerator(int automatonsNumber, int verticesNumber, int lettersNumber) {
         this.automatonsNumber = automatonsNumber;
@@ -37,13 +38,15 @@ public class ReverseAutomatonsGenerator {
         this.generatedAutsList = new ArrayList<>();
         this.reverseNfAutsList = new ArrayList<>();
         this.reverseAutsList = new ArrayList<>();
+        this.minimizedAutsList = new ArrayList<>();
     }
 
     public void generateReverseAutomatons() {
         List<String> letters = new ArrayList<>(List.of("a", "b", "c", "d"));
         Random randomInt = new Random(System.currentTimeMillis());
 
-        for (int k = 0; k < automatonsNumber; k++) {
+        int counter = 0;
+        while (counter != automatonsNumber) {
             HashBasedTable<String, String, String> currentTable = HashBasedTable.create();
 
             for (int i = 1; i <= verticesNumber; i++)
@@ -54,12 +57,12 @@ public class ReverseAutomatonsGenerator {
             String startVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
 
             List<String> finalVertices = new ArrayList<>();
-            int finalVerticesCount = 1 + randomInt.nextInt(verticesNumber);
+            int finalVerticesCount = 1 + randomInt.nextInt(verticesNumber - 1);
             Set<String> alreadySeen = new HashSet<>();
             for (int i = 0; i < finalVerticesCount; i++) {
                 String finalVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
 
-                while (alreadySeen.contains(finalVertex)) {
+                while (alreadySeen.contains(finalVertex) || finalVertex.equals(startVertex)) {
                     finalVertex = String.valueOf(1 + randomInt.nextInt(verticesNumber));
                 }
 
@@ -68,11 +71,24 @@ public class ReverseAutomatonsGenerator {
             }
 
             Automaton generatedAut = new Automaton(false, currentTable, startVertex, finalVertices);
-            NFAutomaton reverseNfAut = Reverse.reverseAutomaton(generatedAut);
 
-            generatedAutsList.add(generatedAut);
-            reverseNfAutsList.add(reverseNfAut);
-            reverseAutsList.add(reverseNfAut.transformNFA2DFA());
+            if (generatedAut.isAutomatonFullAndWithoutStockVertices()) {
+                NFAutomaton reverseNfAut = Reverse.reverseAutomaton(generatedAut);
+                Automaton transformedAut = reverseNfAut.transformNFA2DFA();
+
+                generatedAutsList.add(generatedAut);
+                reverseNfAutsList.add(reverseNfAut);
+                reverseAutsList.add(transformedAut);
+
+                try {
+                    Automaton minimizedAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedAut);
+                    minimizedAutsList.add(minimizedAut);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+
+                counter += 1;
+            }
         }
     }
 
@@ -91,7 +107,8 @@ public class ReverseAutomatonsGenerator {
         Font mainFont = FontFactory.getFont(FontFactory.HELVETICA);
         Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
-        Chunk titleChunk = new Chunk("Task: find the reverse of DFA. If NFA found, then transform it to DFA\n\n",
+        Chunk titleChunk = new Chunk(
+                "Task: find the reverse of DFA. If NFA found, then transform it to DFA and find minimized DFA\n\n",
                 boldFont);
 
         Paragraph paragraph = new Paragraph();
@@ -150,6 +167,12 @@ public class ReverseAutomatonsGenerator {
 
             Automaton reverseAut = reverseAutsList.get(counter - 1);
             writeAutTable(mainFont, paragraph, reverseAut);
+
+            Chunk minimizedDFAChunk = new Chunk("Minimized DFA\n", mainFont);
+            paragraph.add(minimizedDFAChunk);
+
+            Automaton minimizedAut = minimizedAutsList.get(counter - 1);
+            writeAutTable(mainFont, paragraph, minimizedAut);
         }
 
         document.add(paragraph);

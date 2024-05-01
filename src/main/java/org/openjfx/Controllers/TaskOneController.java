@@ -204,23 +204,19 @@ public class TaskOneController {
 
         ObservableList<String[]> data = FXCollections.observableArrayList(jumpTable);
         TableView<String[]> automatonTableView = new TableView<>();
+        automatonTableView.setMinSize(100, 100);
+        automatonTableView.setMaxSize(200, 200);
 
         int stateColumnWidth = 150;
         int regularColumnWidth = 50;
-        int width;
 
         for (int i = 0; i < automaton.letters.size() + 1; i++) {
             TableColumn<String[], String> tableColumn;
             if (i == 0) {
                 tableColumn = new TableColumn<>("Состояние \\ Буква");
-                width = stateColumnWidth;
             } else {
                 tableColumn = new TableColumn<>(automaton.letters.get(i - 1).strip());
-                width = regularColumnWidth;
             }
-            tableColumn.setMinWidth(width);
-            tableColumn.setPrefWidth(width);
-            tableColumn.setMaxWidth(width);
             final int columnNumber = i;
             tableColumn.setCellValueFactory(p -> new SimpleStringProperty((p.getValue()[columnNumber])));
             tableColumn.setStyle( "-fx-alignment: CENTER;");
@@ -233,6 +229,7 @@ public class TaskOneController {
         automatonTableView.maxHeightProperty().bind((new SimpleIntegerProperty(20)).multiply(automatonTableView.getFixedCellSize()).add(34));
         automatonTableView.prefWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
         automatonTableView.maxWidthProperty().bind(new SimpleIntegerProperty(stateColumnWidth + regularColumnWidth * 4));
+        automatonTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         return automatonTableView;
     }

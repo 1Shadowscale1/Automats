@@ -5,6 +5,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -110,5 +111,41 @@ public class Adduction {
         clone.finalVertices = Lists.newArrayList(newFinalVertexes);
 
         return clone;
+    }
+
+    public static Automaton buildAdductedAutomatFromNotFullDFA(Automaton automaton) throws CloneNotSupportedException {
+        Automaton clonedAutomaton = automaton.clone();
+        clonedAutomaton.addStockVertex("");
+
+        Automaton minimizedClonedAutomaton = buildAdductedAutomat(prettifyAdductedAutomatOutput(clonedAutomaton));
+        minimizedClonedAutomaton.removeStockVertex("{}");
+
+        return minimizedClonedAutomaton;
+    }
+
+    private static Automaton prettifyAdductedAutomatOutput(Automaton automaton) {
+        String startVertex = "{" + automaton.startVertex + "}";
+
+        List<String> finalVertices = new ArrayList<>();
+        for (String finalVertex : automaton.finalVertices)
+            finalVertices.add("{" + finalVertex + "}");
+        
+        HashBasedTable<String, String, String> jumpTable = HashBasedTable.create();
+        for (String vertex : automaton.vertices) {
+            HashBasedTable<String, String, String> vertexRow = HashBasedTable.create();
+
+            for (String letter : automaton.letters) {
+                String currentVertex = automaton.getJumpByVertexAndLetter(vertex, letter);
+
+                if (currentVertex.equals(""))
+                    vertexRow.put("{" + vertex + "}", letter, "{}");
+                else
+                    vertexRow.put("{" + vertex + "}", letter, "{" + currentVertex + "}");
+            }
+
+            jumpTable.putAll(vertexRow);
+        }
+        
+        return new Automaton(false, jumpTable, startVertex, finalVertices);
     }
 }
