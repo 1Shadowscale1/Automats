@@ -10,16 +10,28 @@ import automaton.NFAutomaton;
 
 public class Closures {
     public static Automaton prefixClosure(Automaton automaton) throws CloneNotSupportedException {
-        Automaton prefixAutomaton = automaton.clone();
-        prefixAutomaton.finalVertices = new ArrayList<>(prefixAutomaton.vertices);
+        Automaton clonedAutomaton = automaton.clone();
 
-        return prefixAutomaton;
+        List<String> finalVertices = new ArrayList<>();
+        for (String vertex : clonedAutomaton.vertices) {
+            if (!clonedAutomaton.isVertexStock(vertex))
+                finalVertices.add(vertex);
+        }
+
+        clonedAutomaton.finalVertices = finalVertices;
+
+        return clonedAutomaton;
     }
 
     public static NFAutomaton suffixClosure(Automaton automaton) throws CloneNotSupportedException {
         HashBasedTable<String, String, List<String>> nfaJumpTable = HashBasedTable.create();
         List<String> startVertices = new ArrayList<>(automaton.vertices);
-        List<String> finalVertices = new ArrayList<>(automaton.finalVertices);
+        List<String> finalVertices = new ArrayList<>();
+
+        for (String vertex : automaton.vertices) {
+            if (!automaton.isVertexStock(vertex))
+                finalVertices.add(vertex);
+        }
 
         for (String vertex : automaton.vertices) {
             HashBasedTable<String, String, List<String>> vertexRow = HashBasedTable.create();
@@ -38,7 +50,12 @@ public class Closures {
     public static NFAutomaton subwordClosure(Automaton automaton) throws CloneNotSupportedException {
         HashBasedTable<String, String, List<String>> nfaJumpTable = HashBasedTable.create();
         List<String> startVertices = new ArrayList<>(automaton.vertices);
-        List<String> finalVertices = new ArrayList<>(automaton.vertices);
+        List<String> finalVertices = new ArrayList<>();
+
+        for (String vertex : automaton.vertices) {
+            if (!automaton.isVertexStock(vertex))
+                finalVertices.add(vertex);
+        }
 
         for (String vertex : automaton.vertices) {
             HashBasedTable<String, String, List<String>> vertexRow = HashBasedTable.create();

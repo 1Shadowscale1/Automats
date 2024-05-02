@@ -190,7 +190,7 @@ public class TaskEightController {
 
             Automaton minimizedAutomaton;
             try {
-                minimizedAutomaton = Adduction.buildAdductedAutomatFromNotFullDFA(transformedAutomaton);
+                minimizedAutomaton = Adduction.buildPrettyAdductedAutomat(transformedAutomaton);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 return;

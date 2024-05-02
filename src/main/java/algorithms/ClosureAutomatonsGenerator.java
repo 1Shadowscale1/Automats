@@ -56,6 +56,7 @@ public class ClosureAutomatonsGenerator {
         Random randomInt = new Random(System.currentTimeMillis());
 
         int counter = 0;
+        int easyTaskCounter = 0;
         while (counter != automatonsNumber) {
             HashBasedTable<String, String, String> currentTable = HashBasedTable.create();
 
@@ -82,26 +83,45 @@ public class ClosureAutomatonsGenerator {
 
             Automaton generatedAut = new Automaton(false, currentTable, startVertex, finalVertices);
 
-            if (generatedAut.isAutomatonFullAndWithoutStockVertices()) {
-                generatedAutsList.add(generatedAut);
-
+            Boolean isEasyTask = false;
+            if (generatedAut.isAutomatonWithoutUnreachableVertices()) {
                 try {
+                    if (randomInt.nextInt(automatonsNumber) == counter &&
+                            counter > randomInt.nextInt(automatonsNumber) &&
+                            easyTaskCounter < 2) {
+                        isEasyTask = true;
+                        easyTaskCounter += 1;
+                    }
+
                     Automaton prefixAut = Closures.prefixClosure(generatedAut);
-                    Automaton minimizedPrefixAut = Adduction.buildAdductedAutomatFromNotFullDFA(prefixAut);
+                    Automaton minimizedPrefixAut = Adduction.buildPrettyAdductedAutomat(prefixAut);
+
+                    if (!isEasyTask && minimizedPrefixAut.vertices.size() == 1)
+                        continue;
 
                     NFAutomaton suffixAut = Closures.suffixClosure(generatedAut);
                     Automaton transformedSuffixAut = suffixAut.transformNFA2DFA();
-                    Automaton minimizedSuffixAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedSuffixAut);
+                    Automaton minimizedSuffixAut = Adduction.buildPrettyAdductedAutomat(transformedSuffixAut);
+
+                    if (!isEasyTask && minimizedSuffixAut.vertices.size() == 1)
+                        continue;
 
                     NFAutomaton subwordAut = Closures.subwordClosure(generatedAut);
                     Automaton transformedSubwordAut = subwordAut.transformNFA2DFA();
-                    Automaton minimizedSubwordAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedSubwordAut);
+                    Automaton minimizedSubwordAut = Adduction.buildPrettyAdductedAutomat(transformedSubwordAut);
+
+                    if (!isEasyTask && minimizedPrefixAut.vertices.size() == 1)
+                        continue;
+
+                    generatedAutsList.add(generatedAut);
 
                     prefixAutsList.add(prefixAut);
                     minimizedPrefixAutsList.add(minimizedPrefixAut);
+
                     suffixNfAutsList.add(suffixAut);
                     suffixAutsList.add(transformedSuffixAut);
                     minimizedSuffixAutsList.add(minimizedSuffixAut);
+
                     subwordNfAutsList.add(subwordAut);
                     subwordAutsList.add(transformedSubwordAut);
                     minimizedSubwordAutsList.add(minimizedSubwordAut);
@@ -110,6 +130,7 @@ public class ClosureAutomatonsGenerator {
                 }
 
                 counter += 1;
+                isEasyTask = false;
             }
         }
     }

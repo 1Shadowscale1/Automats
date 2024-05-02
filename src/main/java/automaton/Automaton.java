@@ -7,8 +7,10 @@ import com.google.common.collect.Sets;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -81,7 +83,7 @@ public class Automaton implements Cloneable, Serializable {
         return distinctJumps.size() == 1 && distinctJumps.contains(vertex) && !finalVertices.contains(vertex);
     }
 
-    public boolean isAutomatonFullAndWithoutStockVertices() {
+    public boolean isAutomatonWithoutUnreachableVertices() {
         Set<String> reachedVertexes = Sets.newHashSet();
         reachedVertexes.add(startVertex);
 
@@ -97,30 +99,38 @@ public class Automaton implements Cloneable, Serializable {
         }
 
         Set<String> notReachedVertexes = Sets.difference(new HashSet<>(vertices), reachedVertexes);
-        if (!notReachedVertexes.isEmpty())
-            return false;
 
-        for (String vertex : vertices)
-            if (isVertexStock(vertex))
-                return false;
-
-        return true;
+        return notReachedVertexes.isEmpty();
     }
 
-    public void addStockVertex(String vertex) {
+    public void addStockVertex(String stockVertex) {
+        Map<String, Set<String>> pair = new HashMap<>();
+
+        for (String vertex : vertices) {
+            for (String letter : letters) {
+                if (getJumpByVertexAndLetter(vertex, letter).equals("")) {
+                    if (!pair.containsKey(vertex))
+                        pair.put(vertex, new HashSet<>(Set.of(letter)));
+                    else
+                        pair.get(vertex).add(letter);
+                }
+            }
+        }
+
+        if (pair.isEmpty())
+            return;
+        
+        for (Map.Entry<String, Set<String>> pairEntry : pair.entrySet()) {
+            String vertex = pairEntry.getKey();
+
+            for (String letter : pairEntry.getValue())
+                jumpTable.put(vertex, letter, stockVertex);
+        }
+
         HashBasedTable<String, String, String> vertexRow = HashBasedTable.create();
-        for (String letter : letters) {
-            vertexRow.put(vertex, letter, vertex);
-        }
-        addVertex(vertex, vertexRow);
-    }
-
-    public void removeStockVertex(String vertex) {
-        if (vertices.contains(vertex)) {
-            finalVertices.remove(vertex);
-            jumpTable.row(vertex).clear();
-            vertices.remove(vertex);
-        }
+        for (String letter : letters)
+            vertexRow.put(stockVertex, letter, stockVertex);
+        addVertex(stockVertex, vertexRow);
     }
 
     @Override

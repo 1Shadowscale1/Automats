@@ -72,9 +72,9 @@ public class AutomatonReverseInputController extends AutomatonInputController {
             Automaton resAutomaton = new Automaton(false, jumpTable, startVertex, Arrays.asList(finalVertices));
 
             tableWindowMainPane.getChildren().remove(inputCorrectnessText);
-            if (!resAutomaton.isAutomatonFullAndWithoutStockVertices()) {
+            if (!resAutomaton.isAutomatonWithoutUnreachableVertices()) {
                 setupInputCorrectnessText(inputCorrectnessText,
-                        "Автомат не должен содержать стоковых вершин и все вершины должны быть достижимы",
+                        "Автомат должен содержать только достижимые вершины",
                         automatonTableView);
                 tableWindowMainPane.getChildren().add(inputCorrectnessText);
                 tableWindowMainPane.requestLayout();

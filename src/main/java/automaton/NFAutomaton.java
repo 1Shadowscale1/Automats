@@ -81,7 +81,11 @@ public class NFAutomaton extends Automaton {
             }
         }
 
-        return new Automaton(false, dfaJumpTable, getVertexName(dfaStartVertex), dfaFinalVertices);
+        Automaton transformedAutomaton = new Automaton(false, dfaJumpTable,
+                getVertexName(dfaStartVertex), dfaFinalVertices);
+        transformedAutomaton.addStockVertex("stock");
+
+        return transformedAutomaton;
     }
 
     @Override

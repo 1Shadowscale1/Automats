@@ -86,7 +86,7 @@ public class TaskNineController {
             button.getScene().getWindow().hide();
             Automaton adductedAutomaton;
             try {
-                adductedAutomaton = Adduction.buildAdductedAutomatFromNotFullDFA(automaton);
+                adductedAutomaton = Adduction.buildPrettyAdductedAutomat(automaton);
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
                 return;

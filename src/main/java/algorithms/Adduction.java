@@ -113,14 +113,8 @@ public class Adduction {
         return clone;
     }
 
-    public static Automaton buildAdductedAutomatFromNotFullDFA(Automaton automaton) throws CloneNotSupportedException {
-        Automaton clonedAutomaton = automaton.clone();
-        clonedAutomaton.addStockVertex("");
-
-        Automaton minimizedClonedAutomaton = buildAdductedAutomat(prettifyAdductedAutomatOutput(clonedAutomaton));
-        minimizedClonedAutomaton.removeStockVertex("{}");
-
-        return minimizedClonedAutomaton;
+    public static Automaton buildPrettyAdductedAutomat(Automaton automaton) throws CloneNotSupportedException {
+        return buildAdductedAutomat(prettifyAdductedAutomatOutput(automaton));
     }
 
     private static Automaton prettifyAdductedAutomatOutput(Automaton automaton) {
@@ -137,10 +131,7 @@ public class Adduction {
             for (String letter : automaton.letters) {
                 String currentVertex = automaton.getJumpByVertexAndLetter(vertex, letter);
 
-                if (currentVertex.equals(""))
-                    vertexRow.put("{" + vertex + "}", letter, "{}");
-                else
-                    vertexRow.put("{" + vertex + "}", letter, "{" + currentVertex + "}");
+                vertexRow.put("{" + vertex + "}", letter, "{" + currentVertex + "}");
             }
 
             jumpTable.putAll(vertexRow);

@@ -72,16 +72,16 @@ public class ReverseAutomatonsGenerator {
 
             Automaton generatedAut = new Automaton(false, currentTable, startVertex, finalVertices);
 
-            if (generatedAut.isAutomatonFullAndWithoutStockVertices()) {
-                NFAutomaton reverseNfAut = Reverse.reverseAutomaton(generatedAut);
-                Automaton transformedAut = reverseNfAut.transformNFA2DFA();
-
-                generatedAutsList.add(generatedAut);
-                reverseNfAutsList.add(reverseNfAut);
-                reverseAutsList.add(transformedAut);
-
+            if (generatedAut.isAutomatonWithoutUnreachableVertices()) {
                 try {
-                    Automaton minimizedAut = Adduction.buildAdductedAutomatFromNotFullDFA(transformedAut);
+                    NFAutomaton reverseNfAut = Reverse.reverseAutomaton(generatedAut);
+                    Automaton transformedAut = reverseNfAut.transformNFA2DFA();
+                    Automaton minimizedAut = Adduction.buildPrettyAdductedAutomat(transformedAut);
+
+                    generatedAutsList.add(generatedAut);
+
+                    reverseNfAutsList.add(reverseNfAut);
+                    reverseAutsList.add(transformedAut);
                     minimizedAutsList.add(minimizedAut);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
