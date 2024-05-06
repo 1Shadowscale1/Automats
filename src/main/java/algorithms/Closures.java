@@ -25,12 +25,12 @@ public class Closures {
 
     public static NFAutomaton suffixClosure(Automaton automaton) throws CloneNotSupportedException {
         HashBasedTable<String, String, List<String>> nfaJumpTable = HashBasedTable.create();
-        List<String> startVertices = new ArrayList<>(automaton.vertices);
-        List<String> finalVertices = new ArrayList<>();
+        List<String> startVertices = new ArrayList<>();
+        List<String> finalVertices = new ArrayList<>(automaton.finalVertices);
 
         for (String vertex : automaton.vertices) {
             if (!automaton.isVertexStock(vertex))
-                finalVertices.add(vertex);
+                startVertices.add(vertex);
         }
 
         for (String vertex : automaton.vertices) {
@@ -49,12 +49,14 @@ public class Closures {
 
     public static NFAutomaton subwordClosure(Automaton automaton) throws CloneNotSupportedException {
         HashBasedTable<String, String, List<String>> nfaJumpTable = HashBasedTable.create();
-        List<String> startVertices = new ArrayList<>(automaton.vertices);
+        List<String> startVertices = new ArrayList<>();
         List<String> finalVertices = new ArrayList<>();
 
         for (String vertex : automaton.vertices) {
-            if (!automaton.isVertexStock(vertex))
+            if (!automaton.isVertexStock(vertex)) {
+                startVertices.add(vertex);
                 finalVertices.add(vertex);
+            }
         }
 
         for (String vertex : automaton.vertices) {
